@@ -1,4 +1,4 @@
-# Deploy laravel on Kubernetes with this Helm chart
+# Deploy laravel on Kubernetes with Helm chart
 
 To more easily deploy and manage the Laravel application containers in a Kubernetes cluster, you can use Helm charts.
 
@@ -9,6 +9,11 @@ This guide walks you through the process of running an laravel application on a 
 Before you begin, please ensure [Docker](https://www.docker.com/), [Docker Compose](https://docs.docker.com/compose/), [Helm](https://helm.sh/) and [Kubernetes](https://github.com/dambergautam/docker-examples/blob/master/4-kubernetes/kubernetes-setup.md) are installed and Docker is running.
 
 **Step 1:**
+
+Clone this project `git clone https://github.com/dambergautam/laravel-kubernetes-helm.git`.
+
+**Step 2:**
+
 Run below command to add blank laravel project from root directory.
 
 ```
@@ -20,12 +25,12 @@ This command will
 - create docker images and run containers  
 - perform series of Laravel Artisan and NPM commands in the container.
 
-To access website visit http://localhost:82/.
+To access website locally, visit http://localhost:82/.
 
-**Step 2**
-To deploy in kubernetes using helm chart
+**Step 3:**
 
-Create PHPFPM image with laravel application source
+To deploy the application on kubernetes using helm chart, create PHPFPM image
+with laravel application source
 
 ```
 docker build -t acr2.tst.apnic.net/webops/laravel-application:0.1.0 ./docker/Dockerfile.phpfpm
