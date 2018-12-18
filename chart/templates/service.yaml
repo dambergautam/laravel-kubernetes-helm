@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "laravel.fullname" . }}
+  labels:
+    app: {{ template "laravel.name" . }}
+    chart: {{ template "laravel.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.nginxService.type }}
+  ports:
+    - port: {{ .Values.nginxService.externalPort }}
+      targetPort: {{ .Values.nginxService.internalPort }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "laravel.name" . }}
+    release: {{ .Release.Name }}

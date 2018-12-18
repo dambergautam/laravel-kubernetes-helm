@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "laravel.fullname" . }}
+  labels:
+    app: {{ template "laravel.name" . }}
+    chart: {{ template "laravel.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "laravel.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "laravel.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        - name: source-code
+          emptyDir: {}
+        - name: nginx-vhost
+          configMap:
+            name: {{ template "laravel.name" . }}-nginx-vhost
+      containers:
+        # Nginx Container
+        - name: {{ .Chart.Name }}-nginx
+          image: "acr2.tst.apnic.net/webops/laravel-nginx:0.1.0"
+          #image: "nginx:alpine"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.nginxService.internalPort }}
+          volumeMounts:
+            - name: nginx-vhost
+              mountPath: /etc/nginx/conf.d
+            - name: source-code
+              mountPath: /var/www/laravel/
+        # PHPfpm Container
+        - name: {{ .Chart.Name }}-phpfpm
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "cp -r /var/www/laravel/. /laravel"]
+          ports:
+            - name: http-phpfpm
+              containerPort: {{ .Values.phpfpmService.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: source-code
+              mountPath: /laravel

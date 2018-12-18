@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "laravel.fullname" . }}-nginx-vhost
+  labels:
+    app: {{ template "laravel.name" . }}-nginx-vhost
+    chart: {{ template "laravel.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  laravel.conf: |-
+    server {
+        listen {{ .Values.nginxService.internalPort }};
+        listen [::]:{{ .Values.nginxService.internalPort }};
+
+        server_name laravel.service.tst.consul;
+        root /laravel/public;
+        index index.php index.html index.htm;
+
+        location / {
+             try_files $uri /index.php?$args;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+            fastcgi_param PATH_INFO $fastcgi_path_info;
+        }
+
+        access_log /dev/stdout;
+        error_log /dev/stderr;
+    }
