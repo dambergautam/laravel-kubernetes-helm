@@ -8,7 +8,7 @@ rm -rf docker/laravel
 LARAVEL_VERSION_NO="5.5.28"
 curl -L https://github.com/laravel/laravel/archive/v${LARAVEL_VERSION_NO}.tar.gz | tar xz
 mv laravel-${LARAVEL_VERSION_NO} docker/laravel
-cp laravel/.env.example laravel/.env
+cp docker/laravel/.env.example docker/laravel/.env
 # -------------------- #
 
 # OPTION 2

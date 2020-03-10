@@ -3,23 +3,27 @@ version: '2'
 services:
     # Laravel application
     laravel_php_fpm:
-        build: ./docker/Dockerfile.phpfpm
+        build: 
+            context: ./docker
+            dockerfile: "Dockerfile.phpfpm"
         container_name: laravel-phpfpm
         volumes:
             - ./docker/laravel:/var/www/laravel
         links:
-            - "laravel_database"
+            - laravel_database
         ports:
-            - "9010:9000"
+            - 9010:9000
         depends_on:
-            - "laravel_database"
+            - laravel_database
         environment:
-            - "DB_PORT=3306"
-            - "DB_HOST=laravel_database"
+            - DB_PORT=3306
+            - DB_HOST=laravel_database
 
     # Webserver
     nginx:
-        build: ./docker/Dockerfile.nginx
+        build: 
+            context: ./docker
+            dockerfile: Dockerfile.nginx
         container_name: laravel-nginx
         ports:
             - "82:80"
