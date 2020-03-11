@@ -1,0 +1,23 @@
+#-------------------------------------------------------------------------------
+#
+# Git Ignore Config, https://git-scm.com/docs/gitignore.
+#
+#-------------------------------------------------------------------------------
+
+# Laravel project 
+docker/laravel
+
+# Container data
+docker/logs 
+docker/db/dbdata
+
+# Editor files
+/.idea
+/.vscode
+/nbproject
+
+# Hidden and data files
+*.DS_Store
+*Thumbs.db
+*.bak
+*.swp

@@ -1,6 +1,10 @@
 #!/bin/bash
 
+# Clean up existing docker data -For clean installation
 rm -rf docker/laravel
+rm -rf docker/db/dbdata
+
+docker-compose down 
 
 # OPTION 1
 # -------------------- #
@@ -8,7 +12,7 @@ rm -rf docker/laravel
 LARAVEL_VERSION_NO="5.5.28"
 curl -L https://github.com/laravel/laravel/archive/v${LARAVEL_VERSION_NO}.tar.gz | tar xz
 mv laravel-${LARAVEL_VERSION_NO} docker/laravel
-cp laravel/.env.example laravel/.env
+cp docker/laravel/.env.example docker/laravel/.env
 # -------------------- #
 
 # OPTION 2
@@ -33,14 +37,17 @@ docker-compose exec $APP_NAME composer install
 
 docker-compose exec $APP_NAME php artisan key:generate
 
-docker-compose exec $APP_NAME php artisan optimize
-
-docker-compose exec $APP_NAME php artisan migrate
-
 docker-compose exec $APP_NAME node -v
 
 docker-compose exec $APP_NAME npm install
 
 docker-compose exec $APP_NAME npm run dev
+
+# Ensure database is ready to handel php artisan command
+sleep 3
+
+docker-compose exec $APP_NAME php artisan optimize
+
+docker-compose exec $APP_NAME php artisan migrate
 
 docker-compose exec $APP_NAME vendor/bin/phpunit

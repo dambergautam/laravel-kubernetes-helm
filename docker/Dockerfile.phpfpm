@@ -1,6 +1,7 @@
 FROM php:7.2-fpm
 
-ENV WORKDIR "/var/www/laravel"
+ENV WORKDIR=/var/www/laravel \
+    NODE_VERSION=8.11.1
 
 # Install common tools and libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -52,8 +53,12 @@ RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install Node.js (LTS version 8.11.1)
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
-  apt-get install -y nodejs
+RUN curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
+    && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
+    && rm "node-v$NODE_VERSION-linux-x64.tar.xz" \
+    && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+    && node -v \
+    && npm -v  
 
 # Set your timezone here
 RUN rm /etc/localtime
