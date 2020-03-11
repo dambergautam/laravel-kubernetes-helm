@@ -27,20 +27,24 @@ This command will
 
 To access website locally, visit http://localhost:82/.
 
+![Homepage Screenshot](./laravel-homepage.png)
+
 **Step 3:**
 
 To deploy the application on kubernetes using helm chart, create PHPFPM image
 with laravel application source
 
+Let's say `acr2.tst.apnic.net` is our docker repository -
+
 ```
+# Create new image
 docker build -t acr2.tst.apnic.net/webops/laravel-application:0.1.0 ./docker/Dockerfile.phpfpm
+
+# You might have to login to push image in docker repository.
+docker login acr2.tst.apnic.net
+
+# Push image to your private repository
 docker push acr2.tst.apnic.net/webops/laravel-application:0.1.0
-```
-
-You might have to login to push image in docker repository.
-
-```
-docker login
 ```
 
 Create Nginx image

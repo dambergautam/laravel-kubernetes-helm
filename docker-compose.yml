@@ -43,8 +43,8 @@ services:
             - "./docker/db:/docker-entrypoint-initdb.d"
             - "./docker/db/dbdata:/var/lib/mysql"
         environment:
-            - "MYSQL_DATABASE=laravel"
-            - "MYSQL_USER=laravel"
+            - "MYSQL_DATABASE=homestead"
+            - "MYSQL_USER=homestead"
             - "MYSQL_PASSWORD=secret"
             - "MYSQL_ROOT_PASSWORD=root"
         ports:
