@@ -28,7 +28,7 @@ spec:
       containers:
         # Nginx Container
         - name: {{ .Chart.Name }}-nginx
-          image: "acr2.tst.apnic.net/webops/laravel-nginx:0.1.0"
+          image: "example-docker-register-server/laravel-nginx:0.1.0"
           #image: "nginx:alpine"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

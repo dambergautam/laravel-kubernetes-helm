@@ -18,7 +18,7 @@ cp docker/laravel/.env.example docker/laravel/.env
 # OPTION 2
 # -------------------- #
 # OR clone your existing project
-#git clone http://gitlab.apnic.net/laravel/laravel-laravel.git laravel
+#git clone https://github.com/<laravel-project-repo>.git laravel
 #mv laravel docker/laravel
 
 # Checkout develop branch for local development purpose

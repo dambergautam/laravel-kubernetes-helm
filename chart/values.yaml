@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: acr2.tst.apnic.net/webops/laravel-application
+  repository: example-docker-register-server/laravel-application
   tag: 0.1.0
   pullPolicy: IfNotPresent
 
